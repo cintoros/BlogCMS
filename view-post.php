@@ -18,11 +18,9 @@ if(isset($_POST['comment']))
 		$com= $_POST['com'];
 		$mail= $_POST['email'];
 		$p=$_POST['pid'];
-
-
-					$sql = "insert into comments (content,author,date,Post_ID) values ('$com','$mail',now(),'$p')";
- 
- if(mysqli_query($db, $sql)){
+        $stmt = $db->prepare("insert into comments (content,author,date,Post_ID) values (?,?,now()),?");
+        $stmt->bind_param("sss", $com, $mail, $p);
+        if ($stmt->execute()){
  echo "Comment Added!";
  }
  else{
